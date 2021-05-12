@@ -2,11 +2,21 @@ import React, { Fragment, Component } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ReactDOM from "react-dom";
 import "./index.css";
-
+// React Router
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 // Components
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import ContactList from "./Components/ContactList/ContactList";
+import NotFound from "./Components/NotFound/NotFound";
+import About from "./Components/About/About";
+import Contact from "./Components/Contact/Contact";
+import AddContact from "./Components/AddContact/AddContact"
 class App extends Component {
   state = {
     List: [
@@ -70,21 +80,42 @@ class App extends Component {
       });
     }
   };
+
+  onAddContact = (newContact) =>{
+    let tmpList = this.state.List.slice()
+    tmpList.unshift(newContact)
+    this.setState({
+      List:tmpList
+    })
+  }
   render() {
     const { List } = this.state;
-  
+
     return (
       <Fragment>
-        <Header />
-        <ContactList
-          onDelete={this.onDelete}
-          ContactList={List}
-          changeStatus={this.changeStatus}
-        />
-        <Footer />
+      
+      <Router>
+      <Header />
+        <Switch>
+          
+          <Route path="/" exact render={()=> <ContactList ContactList={List} onDelete={this.onDelete} changeStatus={this.changeStatus} />}
+          
+
+          />
+          <Route path="/contact" exact component ={Contact}/>
+          <Route path="/about" exact component ={About}/>
+          <Route path="/add-contact" exact render={()=> <AddContact  onAddContact={this.onAddContact}/>}/>
+          <Route component ={NotFound}/>
+        </Switch>
+
+      </Router>
+      <Footer />
       </Fragment>
     );
   }
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
+ {/* onDelete={this.onDelete}
+            ContactList={List}
+            changeStatus={this.changeStatus} */}

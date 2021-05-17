@@ -302,3 +302,9 @@ input {
 .empty-list{
   color: black;
 }
+.avatar_img{
+  border: 1px solid Grey;
+  height: 300px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

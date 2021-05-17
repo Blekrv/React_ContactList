@@ -98,10 +98,7 @@ class App extends Component {
       <Header />
         <Switch>
           
-          <Route path="/" exact render={()=> <ContactList ContactList={List} onDelete={this.onDelete} changeStatus={this.changeStatus} />}
-          
-
-          />
+          <Route path="/" exact render={()=> <ContactList ContactList={List} onDelete={this.onDelete} changeStatus={this.changeStatus} />} />
           <Route path="/contact" exact component ={Contact}/>
           <Route path="/about" exact component ={About}/>
           <Route path="/add-contact" exact render={()=> <AddContact  onAddContact={this.onAddContact}/>}/>
@@ -116,6 +113,3 @@ class App extends Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
- {/* onDelete={this.onDelete}
-            ContactList={List}
-            changeStatus={this.changeStatus} */}

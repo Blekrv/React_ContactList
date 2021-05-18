@@ -1,9 +1,10 @@
 import React from "react";
+import {Link} from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 const ContactItem = (props) => {
-  const { Avatar, Gender, Name, Phone, Email, Status, onDelete, changeStatus} = props;
+  const { Avatar, Gender, Name, Phone, Email, Status, onDelete, changeStatus, onEdit} = props;
   const image = `https://randomuser.me/portraits/${Gender}/${Avatar}.jpg`
 
   return (
@@ -25,7 +26,7 @@ const ContactItem = (props) => {
       </div>
       <div className="field email">
         {Email}
-        <FontAwesomeIcon icon={faEdit} size="lg" />
+       <Link to="/edit-contact"><FontAwesomeIcon icon={faEdit} onClick={onEdit} size="lg" /></Link> 
         <FontAwesomeIcon onClick={onDelete} icon={faTrash} size="lg" />
       </div>
     </div>

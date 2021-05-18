@@ -17,37 +17,29 @@ import NotFound from "./Components/NotFound/NotFound";
 import About from "./Components/About/About";
 import Contact from "./Components/Contact/Contact";
 import AddContact from "./Components/AddContact/AddContact"
+import EditContact from "./Components/EditContact/EditContact"
+// API
+import { updateContacts, getAllContacts } from "./Services/api-service"
 class App extends Component {
+
+  componentDidMount() {
+    getAllContacts().then(data => {
+      if (data === null) {
+        this.setState({
+          List: [],
+          
+        })
+      } else {
+        this.setState({
+          List: data
+        })
+      }
+
+    })
+  }
   state = {
-    List: [
-      {
-        Id: uuidv4(),
-        Avatar: 67,
-        Gender: "men",
-        Name: "Alexander Verdnam",
-        Phone: "+1-800-600-9898",
-        Email: "example@gmail.com",
-        Status: "Friends",
-      },
-      {
-        Id: uuidv4(),
-        Avatar: 5,
-        Gender: "men",
-        Name: "Jack Jackson",
-        Phone: "+1-800-700-1234",
-        Email: "jack@gmail.com",
-        Status: "Friends",
-      },
-      {
-        Id: uuidv4(),
-        Avatar: 77,
-        Gender: "women",
-        Name: "Camilla Terry",
-        Phone: "+1-800-745-1854",
-        Email: "camt@gmail.com",
-        Status: "Friends",
-      },
-    ],
+    List: [],
+    CurrentContact: ""
   };
 
   onDelete = (Id) => {
@@ -58,6 +50,7 @@ class App extends Component {
     this.setState({
       List: tmpList,
     });
+    updateContacts(tmpList)
   };
   changeStatus = (Id) => {
     const index = this.state.List.findIndex((elem) => elem.Id === Id);
@@ -81,32 +74,42 @@ class App extends Component {
     }
   };
 
-  onAddContact = (newContact) =>{
+  onAddContact = (newContact) => {
     let tmpList = this.state.List.slice()
     tmpList.unshift(newContact)
     this.setState({
-      List:tmpList
+      List: tmpList
     })
+    updateContacts(tmpList)
+  }
+  onEdit = (Id) =>{
+    const index = this.state.List.findIndex((elem) => elem.Id === Id);
+    const currentContact = this.state.List[index]
+    this.setState({
+      CurrentContact: currentContact
+    })
+    
   }
   render() {
-    const { List } = this.state;
+    const { List, CurrentContact } = this.state;
 
     return (
       <Fragment>
-      
-      <Router>
-      <Header />
-        <Switch>
-          
-          <Route path="/" exact render={()=> <ContactList ContactList={List} onDelete={this.onDelete} changeStatus={this.changeStatus} />} />
-          <Route path="/contact" exact component ={Contact}/>
-          <Route path="/about" exact component ={About}/>
-          <Route path="/add-contact" exact render={()=> <AddContact  onAddContact={this.onAddContact}/>}/>
-          <Route component ={NotFound}/>
-        </Switch>
 
-      </Router>
-      <Footer />
+        <Router>
+          <Header />
+          <Switch>
+
+            <Route path="/" exact render={() => <ContactList ContactList={List} onEdit={this.onEdit} onDelete={this.onDelete} changeStatus={this.changeStatus} />} />
+            <Route path="/contact" exact component={Contact} />
+            <Route path="/about" exact component={About} />
+            <Route path="/add-contact" exact render={() => <AddContact onAddContact={this.onAddContact} />} />
+            <Route path="/edit-contact" exact render={() => <EditContact CurrentContact={CurrentContact} />} />
+            <Route component={NotFound} />
+          </Switch>
+
+        </Router>
+        <Footer />
       </Fragment>
     );
   }

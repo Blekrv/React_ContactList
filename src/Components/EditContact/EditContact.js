@@ -10,8 +10,9 @@ class EditContact extends React.Component {
     Phone: "",
     Email: "",
     Status: "",
-    Avatar1: '',
+    Avatar1: "",
     isRedirect: false,
+    Id: "",
   };
   getName = (e) => {
     const Name = e.target.value;
@@ -38,9 +39,7 @@ class EditContact extends React.Component {
     const Avatar = e.target.value;
     console.log(Avatar);
     this.setState({
-        
       Avatar: Avatar,
-      
     });
   };
   getGender = (e) => {
@@ -60,10 +59,11 @@ class EditContact extends React.Component {
   sendForm = (e) => {
     e.preventDefault();
     const { Avatar, Gender, Name, Phone, Email, Status } = this.state;
-    const { onAddContact } = this.props;
+    const { addEditContact } = this.props;
+    const { Id } = this.props.Contact;
     const newContact = {
-      Id: uuidv4(),
-      Avatar:Avatar,
+      Id: Id,
+      Avatar: Avatar,
       Gender: Gender,
       Name: Name,
       Phone: Phone,
@@ -73,19 +73,20 @@ class EditContact extends React.Component {
     this.setState({
       isRedirect: true,
     });
-    onAddContact(newContact);
+    addEditContact(Id, newContact);
   };
   avatarchange = (e) => {
-    const   Gender  = this.state.Gender;
+    const Gender = this.state.Gender;
     const Avatar1 = e.target.value;
     this.setState({
       Avatar1: `https://randomuser.me/portraits/${Gender}/${Avatar1}.jpg`,
-      Avatar:Avatar1
+      Avatar: Avatar1,
     });
   };
   render() {
-    const { Avatar, Gender, Name, Phone, Email, Status, isRedirect, Avatar1 } =
-      this.state;
+    let { isRedirect } = this.state;
+    const { Avatar, Gender, Name, Phone, Email, Status } = this.props.Contact;
+    console.log("privet", isRedirect);
     if (isRedirect) {
       return <Redirect to="/" />;
     }
@@ -145,7 +146,7 @@ class EditContact extends React.Component {
             </div>
             <div
               className="row col-3 avatar_img ml-5 mt-5"
-              style={{ backgroundImage: `url('${Avatar1}')` }}
+              style={{ backgroundImage: `url('${this.state.Avatar1}')` }}
             ></div>
             <div className="row col-12 flex-column">
               <div className="form-group">
@@ -171,6 +172,7 @@ class EditContact extends React.Component {
                   className="form-control"
                   onChange={(this.getAvatar, this.avatarchange)}
                   required
+                  placeholder={Avatar}
                 />
               </div>
             </div>

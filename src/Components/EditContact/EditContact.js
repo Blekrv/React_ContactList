@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter} from "react-router-dom";
 
 class EditContact extends React.Component {
   state = {
@@ -12,7 +12,7 @@ class EditContact extends React.Component {
     Status: "",
     Avatar1: "",
     isRedirect: false,
-    Id: "",
+    
   };
   getName = (e) => {
     const Name = e.target.value;
@@ -87,6 +87,9 @@ class EditContact extends React.Component {
     let { isRedirect } = this.state;
     const { Avatar, Gender, Name, Phone, Email, Status } = this.props.Contact;
     console.log("privet", isRedirect);
+    if(this.props.Contact === null){
+      return <Redirect to="/" />;
+    }
     if (isRedirect) {
       return <Redirect to="/" />;
     }
@@ -185,4 +188,4 @@ class EditContact extends React.Component {
     );
   }
 }
-export default EditContact;
+export default withRouter(EditContact) ;

@@ -2,8 +2,10 @@ import React, { Fragment, Component } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ReactDOM from "react-dom";
 import "./index.css";
+
 // React Router
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 // Components
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
@@ -13,6 +15,7 @@ import About from "./Components/About/About";
 import Contact from "./Components/Contact/Contact";
 import AddContact from "./Components/AddContact/AddContact";
 import EditContact from "./Components/EditContact/EditContact";
+
 // API
 import { updateContacts, getAllContacts } from "./Services/api-service";
 class App extends Component {
@@ -32,6 +35,7 @@ class App extends Component {
   state = {
     List: [],
     CurrentContact: "",
+    findContact: ""
   };
 
   onDelete = (Id) => {
@@ -66,12 +70,13 @@ class App extends Component {
     }
   };
   addEditContact = (Id, newContact) => {
-    console.log("This STATE LIST", this.state.List);
     let index = this.state.List.findIndex((elem) => elem.Id === Id);
     let tmpList = this.state.List.slice();
-    console.log("index", index);
-    tmpList.splice(index, index, newContact);
-    console.log("tpmlist", tmpList);
+    if (index === 0) {
+      tmpList.splice(0, 1, newContact);
+    } else {
+      tmpList.splice(index, index, newContact);
+    }
     this.setState({
       List: tmpList,
     });
@@ -85,6 +90,25 @@ class App extends Component {
     });
     updateContacts(tmpList);
   };
+  searchName = (event) => {
+    let searchName = event.target.value;
+    this.setState({
+      findContact: searchName
+    });
+  }
+
+  onShowContact = (items, searchValue) => {
+    if (searchValue.length === 0) {
+      return items;
+    }
+
+    return items.filter(item => {
+      return (
+        item.Name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1
+      );
+    });
+  };
+
   onEdit = (Id) => {
     const index = this.state.List.findIndex((elem) => elem.Id === Id);
     const currentContact = this.state.List[index];
@@ -93,19 +117,20 @@ class App extends Component {
     });
   };
   render() {
-    const { List, CurrentContact } = this.state;
+    const showContacts = this.onShowContact(this.state.List, this.state.findContact);
+    const { CurrentContact } = this.state;
 
     return (
       <Fragment>
         <Router>
-          <Header />
+          <Header searchName={this.searchName} />
           <Switch>
             <Route
               path="/"
               exact
               render={() => (
                 <ContactList
-                  ContactList={List}
+                  ContactList={showContacts}
                   onEdit={this.onEdit}
                   onDelete={this.onDelete}
                   changeStatus={this.changeStatus}

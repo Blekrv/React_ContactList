@@ -19,7 +19,7 @@ const ContactItem = (props) => {
         <div>
           <img src={image} alt="image" className="avatar" /> {Name}
         </div>
-        <div className="lab lab-warning" onClick ={changeStatus}>{Status}</div>
+        <div className="lab lab-warning cursor" onClick ={changeStatus}>{Status}</div>
       </div>
       <div className="field phone">
         {Phone}

@@ -1,5 +1,7 @@
 @import "bootstrap.min.css";
-
+.cursor{
+  cursor: pointer;
+}
 .decor-default {
   background-color: #ffffff;
 }

@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom"
 import Search from "./Search/Search";
 
-const Header = ({searchName}) => {
+const Header = ({searchName, searchCategory}) => {
     return (
-        <div className="container">
+        <div className="container header_cont">
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <a className="navbar-brand" href="#">LOGO</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,7 @@ const Header = ({searchName}) => {
                         </li>
                         
                     </ul>
-                    <Search searchName={searchName} />
+                    <Search searchName={searchName} searchCategory={searchCategory}/>
                 </div>
             </nav>
         </div>

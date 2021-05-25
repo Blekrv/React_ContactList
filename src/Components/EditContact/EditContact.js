@@ -4,6 +4,7 @@ import { Redirect, withRouter} from "react-router-dom";
 
 class EditContact extends React.Component {
   state = {
+    Id : 0,
     Avatar: "",
     Gender: "",
     Name: "",
@@ -58,9 +59,8 @@ class EditContact extends React.Component {
   };
   sendForm = (e) => {
     e.preventDefault();
-    const { Avatar, Gender, Name, Phone, Email, Status } = this.state;
+    const { Id, Avatar, Gender, Name, Phone, Email, Status } = this.state;
     const { addEditContact } = this.props;
-    const { Id } = this.props.Contact;
     const newContact = {
       Id: Id,
       Avatar: Avatar,
@@ -70,10 +70,11 @@ class EditContact extends React.Component {
       Email: Email,
       Status: Status,
     };
+ 
+    addEditContact(newContact);
     this.setState({
       isRedirect: true,
     });
-    addEditContact(Id, newContact);
   };
   avatarchange = (e) => {
     const Gender = this.state.Gender;
@@ -87,7 +88,8 @@ class EditContact extends React.Component {
     let { isRedirect } = this.state;
     const { Avatar, Gender, Name, Phone, Email, Status } = this.props.Contact;
     console.log("privet", isRedirect);
-    if(this.props.Contact === null){
+    console.log(this.props.Contact)
+    if(this.props.Contact === ""){
       return <Redirect to="/" />;
     }
     if (isRedirect) {

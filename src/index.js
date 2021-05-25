@@ -35,7 +35,8 @@ class App extends Component {
   state = {
     List: [],
     CurrentContact: "",
-    findContact: ""
+    findContact: "",
+    categoryFind: "",
   };
 
   onDelete = (Id) => {
@@ -69,7 +70,8 @@ class App extends Component {
       });
     }
   };
-  addEditContact = (Id, newContact) => {
+  addEditContact = (newContact) => {
+    const { Id } = newContact;
     let index = this.state.List.findIndex((elem) => elem.Id === Id);
     let tmpList = this.state.List.slice();
     if (index === 0) {
@@ -90,25 +92,6 @@ class App extends Component {
     });
     updateContacts(tmpList);
   };
-  searchName = (event) => {
-    let searchName = event.target.value;
-    this.setState({
-      findContact: searchName
-    });
-  }
-
-  onShowContact = (items, searchValue) => {
-    if (searchValue.length === 0) {
-      return items;
-    }
-
-    return items.filter(item => {
-      return (
-        item.Name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1
-      );
-    });
-  };
-
   onEdit = (Id) => {
     const index = this.state.List.findIndex((elem) => elem.Id === Id);
     const currentContact = this.state.List[index];
@@ -116,14 +99,41 @@ class App extends Component {
       CurrentContact: currentContact,
     });
   };
+  searchName = (event) => {
+    let searchName = event.target.value;
+    this.setState({
+      findContact: searchName,
+    });
+  };
+  searchCategory = (event) => {
+    let searchName = event.target.value;
+    this.setState({
+      categoryFind: searchName,
+    });
+  };
+  onShowContact = (items, searchValue) => {
+    if (searchValue.length === 0) {
+      return items;
+    }
+      return items.filter((item) => {
+        return item[`${this.state.categoryFind}`].toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+      });
+  }
   render() {
-    const showContacts = this.onShowContact(this.state.List, this.state.findContact);
+    const showContacts = this.onShowContact(
+      this.state.List,
+      this.state.findContact,
+      this.state.categoryFind
+    );
     const { CurrentContact } = this.state;
 
     return (
       <Fragment>
         <Router>
-          <Header searchName={this.searchName} />
+          <Header
+            searchName={this.searchName}
+            searchCategory={this.searchCategory}
+          />
           <Switch>
             <Route
               path="/"

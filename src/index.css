@@ -5,6 +5,9 @@
 .decor-default {
   background-color: #ffffff;
 }
+.header_cont{
+  padding: 0;
+}
 .contacts-labels .title {
   font-size: 16px;
   line-height: 112px;

@@ -11,6 +11,7 @@ class Search extends React.Component {
                 <option value="Name" selected >Name</option>
                 <option value="Email">Email</option>
                 <option value="Phone">Phone</option>
+                <option value="Status">Status</option>
             </select>
         </form>
         )
